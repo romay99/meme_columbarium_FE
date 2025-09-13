@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./main-page/MainPage";
 import MemeBoardListPage from "./meme-board-page/MemeBoardListPage";
-import PostPage from "./board-page/PostPage";
+import MemePostPage from "./meme-board-page/MemePostPage";
 
 function App() {
   return (
@@ -10,7 +10,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/meme" element={<MemeBoardListPage />} />
-        <Route path="/meme/post" element={<PostPage />} />
+        <Route path="/meme/post" element={<MemePostPage />} />
       </Routes>
     </Router>
   );
