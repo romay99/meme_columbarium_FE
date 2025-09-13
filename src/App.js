@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import MainPage from "./main-page/MainPage";
-import BoardPage from "./board-page/BoardPage";
+import MemeBoardListPage from "./meme-board-page/MemeBoardListPage";
 import PostPage from "./board-page/PostPage";
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/board" element={<BoardPage />} />
-        <Route path="/post" element={<PostPage />} />
+        <Route path="/meme" element={<MemeBoardListPage />} />
+        <Route path="/meme/post" element={<PostPage />} />
       </Routes>
     </Router>
   );

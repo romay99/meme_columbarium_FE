@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@font-face {
+  font-family: "GowunBatang-Regular";
+  src: url("../public/assets/GowunBatang-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GowunBatang-Bold";
+  src: url("../public/assets/GowunBatang-Bold.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}

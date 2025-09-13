@@ -5,7 +5,7 @@ function MainPage() {
   const navigate = useNavigate();
 
   const handleNavigateToCommunity = () => {
-    navigate("/board");
+    navigate("/meme");
   };
   return (
     <div className="absolute inset-0 overflow-hidden">
