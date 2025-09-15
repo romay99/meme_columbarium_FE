@@ -7,31 +7,44 @@ function MainPage() {
   const handleNavigateToCommunity = () => {
     navigate("/meme");
   };
+
   return (
-    <div className="absolute inset-0 overflow-hidden">
-      {/* 백그라운드 이미지 */}
-      <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/assets/장례식이미지.jpg')" }}></div>
-      {/* 배경 장식 요소들 */}
-      <div className="absolute inset-0 overflow-hidden"></div>
+    <div className="relative min-h-screen bg-white overflow-hidden">
+      {/* 배경 장식 */}
+      <div className="absolute inset-0 bg-gradient-to-b from-white via-gray-100 to-gray-200 -z-10"></div>
 
       {/* 메인 콘텐츠 */}
-      <div className="relative z-10 text-center px-8 flex flex-col justify-between min-h-screen">
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen text-center px-6">
+        {/* 중앙 로고 */}
+        <div className="mb-6">
+          <img src="/assets/logo.png" alt="밈 납골당 로고" className="w-80 h-40 mx-auto opacity-90" />
+        </div>
+
         {/* 제목 */}
-        <h1 className="text-7xl md:text-9xl mt-8 font-bold bg-gradient-to-r from-gray-400 via-gray-400 to-blue-400 bg-clip-text text-transparent mb-8">밈 납골당</h1>
+        <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-4 font-GowunBatang">밈 납골당</h1>
 
         {/* 부제목 */}
-        <p className="text-xl md:text-2xl text-gray-300 mb-10 font-light tracking-wide opacity-80">오늘도 먼저 간 밈들에게 안부를..</p>
+        <p className="text-lg md:text-xl text-gray-600 font-GowunBatang italic mb-6 my-3">오늘도 먼저 간 밈들에게 안부를 전합니다</p>
+
+        {/* 구분선 */}
+        <div className="w-24 h-[2px] bg-gray-300 mb-8 mx-auto rounded"></div>
 
         {/* 버튼 */}
-        <button onClick={handleNavigateToCommunity} className="group relative mt-11 px-12 py-4 bg-gradient-to-r from-gray-100 to-gray-600 text-white text-xl font-semibold rounded-full shadow-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-purple-500/25 active:scale-95">
-          <span className="relative z-10 flex items-center justify-center gap-2">🌸 꽃 한송이 놓으러 가기</span>
-
-          {/* 버튼 hover 배경 효과 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-pink-600 to-purple-600 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-
-          {/* 버튼 글로우 효과 */}
-          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 rounded-full blur-xl opacity-30 group-hover:opacity-50 transition-opacity duration-300 -z-10"></div>
+        <button onClick={handleNavigateToCommunity} className="flex items-center gap-2 px-4 py-2 bg-gray-100 hover:bg-orange-50 rounded-full shadow-md transition-all duration-200">
+          {/* 왼쪽 이미지 */}
+          <img
+            src="/assets/국화-아이콘.png" // 가져온 작은 이미지 경로
+            alt="꽃"
+            className="w-7 h-7 object-contain"
+          />
+          {/* 오른쪽 텍스트 */}
+          <span className="text-gray-900 font-GowunBatangBold text-sm">꽃 한송이 놓으러가기</span>
         </button>
+        <a href="https://www.flaticon.com/kr/free-icons/" title="국화 아이콘" className="hidden">
+          국화 아이콘 제작자: istar_design_bureau - Flaticon
+        </a>
+        {/* 바닥 문구 */}
+        <p className="mt-12 text-sm text-gray-400">© 2025 Meme Memorial Service. All rights reserved.</p>
       </div>
     </div>
   );

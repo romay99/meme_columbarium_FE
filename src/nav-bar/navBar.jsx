@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function NavBar() {
   return (
-    <nav className="bg-gray-900 text-gray-100 shadow-md">
+    <nav className="shadow-md">
       <div className="max-w-6xl mx-auto px-6 py-2 flex justify-center items-center">
         {/* 메뉴 */}
         <div className="hidden md:flex space-x-8">

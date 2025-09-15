@@ -1,127 +1,72 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Footer from "../footer/Footer";
 import NavBar from "../nav-bar/navBar";
-import { useNavigate } from "react-router-dom";
 import MemeData from "./MemeData";
 import SearchBar from "./SearchBar";
 
-const BoardPage = () => {
-  const tmpRes = {
-    page: "1",
-    totalPages: "5",
-    data: [
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-      {
-        code: "1",
-        title: "책 제목",
-        thumbnail: "https://placehold.co/600x400",
-        startDate: "2022.02",
-        endDate: "2022.10",
-      },
-    ],
-  };
-  const [res, setRes] = useState(tmpRes);
-  const [loading, setLoading] = useState(true);
+const MemeBoardListPage = () => {
+  const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
 
+  const [res, setRes] = useState({ page: 1, totalPages: 1, data: [] });
+  const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+
+  // 데이터 fetch
+  const fetchList = async (page) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`${serverUrl}/meme/list?page=${page}`);
+      setRes(response.data); // 서버에서 받아온 데이터로 세팅
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 페이지가 바뀔 때마다 fetch
   useEffect(() => {
-    // 컴포넌트 처음 켜질때
-    const fetchList = async () => {
-      try {
-        // const response = await axios.get("URL");
-        setRes(tmpRes); // 일단 임시 JSON 으로 넣어놓는다.
-      } catch (error) {
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchList();
-  }, []);
+    fetchList(currentPage);
+  }, [currentPage]);
+
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
   const navigate = useNavigate();
   const handleNavigateToPost = () => {
     navigate("/meme/post");
   };
+
   return (
     <div className="flex flex-col min-h-screen">
-      <NavBar></NavBar>
+      <NavBar />
       <section className="flex flex-col justify-center items-center my-1">
         <img src="/assets/logo.png" className="w-80 h-50 object-cover" alt="로고" />
         <p className="mt-4 text-center text-lg text-gray-900 font-GowunBatang">한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…</p>
       </section>
 
-      <SearchBar></SearchBar>
+      <SearchBar />
       <div className="flex-grow">
         <div className="grid grid-cols-5 gap-8 p-6">
-          {res.data.map((item, index) => (
-            <MemeData key={index} title={item.title} startDate={item.startDate} endDate={item.endDate}></MemeData>
-          ))}
+          {res.data.length > 0 ? res.data.map((item) => <MemeData key={item.code} code={item.code} title={item.title} startDate={item.startDate} endDate={item.endDate} />) : <p className="col-span-5 text-center text-gray-500 font-GowunBatang">데이터가 존재하지 않습니다.</p>}
         </div>
       </div>
+
+      {/* 페이지네이션 */}
+      <div className="flex justify-center mt-4 mb-6">
+        {Array.from({ length: res.totalPages }, (_, i) => (
+          <button key={i} onClick={() => handlePageChange(i + 1)} className={`mx-1 px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-300 text-white" : "bg-gray-200"}`}>
+            {i + 1}
+          </button>
+        ))}
+      </div>
+
       <div className="flex justify-end">
-        <button onClick={handleNavigateToPost} class="font-GowunBatang rounded-2xl mx-6 my-5 bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors duration-300">
+        <button className="font-GowunBatang mx-6 my-5 bg-gray-100 text-black px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-300" onClick={handleNavigateToPost}>
           밈 등록하기
         </button>
       </div>
@@ -130,4 +75,4 @@ const BoardPage = () => {
   );
 };
 
-export default BoardPage;
+export default MemeBoardListPage;

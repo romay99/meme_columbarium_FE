@@ -12,7 +12,7 @@ function MemePostPage() {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [contents, setContents] = useState("");
-  const [category, setCategory] = useState(""); // 선택된 카테고리
+  const [category, setCategory] = useState("1"); // 선택된 카테고리(기본값 1 = 인공지능)
   const [categories, setCategories] = useState([]); // DB에서 받아올 카테고리
 
   const editorRef = useRef(null);
@@ -68,6 +68,29 @@ function MemePostPage() {
 
   const handleSubmit = () => {
     const postData = { title, startDate, endDate, contents, category };
+
+    // 유효성 검사
+    if (!title.trim()) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+    if (!startDate) {
+      alert("밈 흥한 날짜를 선택해주세요.");
+      return;
+    }
+    if (!endDate) {
+      alert("밈 망한 날짜를 선택해주세요.");
+      return;
+    }
+    if (!category) {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+    if (!contents.trim()) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
     axios.post(`${serverUrl}/meme/upload`, postData).then(() => {
       alert("업로드 성공!");
       navigate("/meme");
