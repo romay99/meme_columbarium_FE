@@ -12,7 +12,7 @@ const SearchBar = ({ placeholder, onSearch }) => {
 
   return (
     <div className="flex justify-center mt-4">
-      <div className="flex w-7/12 border border-gray-300 rounded-full overflow-hidden shadow-sm">
+      <div className="flex w-6/12 border border-gray-300 rounded-full overflow-hidden shadow-sm">
         <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} onKeyPress={handleKeyPress} placeholder={placeholder || "검색어를 입력하세요..."} className="flex-grow p-3 focus:outline-none text-lg" />
         <button onClick={() => onSearch(query)} className="bg-gray-500 text-white px-4 flex items-center justify-center hover:bg-slate-600 transition-colors duration-200">
           <FaSearch />

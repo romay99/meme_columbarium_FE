@@ -48,9 +48,8 @@ const MemeBoardListPage = () => {
         <img src="/assets/logo.png" className="w-80 h-50 object-cover" alt="로고" />
         <p className="mt-4 text-center text-lg text-gray-900 font-GowunBatang">한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…</p>
       </section>
-
       <SearchBar />
-      <div className="flex-grow">
+      <div className="flex-grow mx-12">
         <div className="grid grid-cols-5 gap-8 p-6">
           {res.data.length > 0 ? res.data.map((item) => <MemeData key={item.code} code={item.code} title={item.title} startDate={item.startDate} endDate={item.endDate} />) : <p className="col-span-5 text-center text-gray-500 font-GowunBatang">데이터가 존재하지 않습니다.</p>}
         </div>

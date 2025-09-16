@@ -15,7 +15,7 @@ const MemeData = (props) => {
       >
         <img src="/assets/test.png" alt={props.title} className="w-40 h-70 object-cover rounded"></img>
         <div className="font-GowunBatangBold my-1">{props.title}</div>
-        <div className="font-GowunBatang">
+        <div className="font-GowunBatang text-sm">
           {props.startDate}~{props.endDate}
         </div>
       </div>
