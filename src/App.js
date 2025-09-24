@@ -1,15 +1,16 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainPage from "./main-page/MainPage";
-import MemeBoardListPage from "./meme-board-page/MemeBoardListPage";
-import MemePostPage from "./meme-board-page/MemePostPage";
-import MemeDetailPage from "./meme-board-page/MemeDetailPage";
-import LoginPage from "./auth-page/LoginPage";
-import SignUpPage from "./auth-page/SignUpPage";
-import { MyPage } from "./auth-page/MyPage";
-import { IntroPage } from "./intro-page/IntroPage";
-import { BoardListPage } from "./board-page/BoardListPage";
-import BoardPostPage from "./board-page/BoardPostPage";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import MainPage from './main-page/MainPage';
+import MemeBoardListPage from './meme-board-page/MemeBoardListPage';
+import MemePostPage from './meme-board-page/MemePostPage';
+import MemeDetailPage from './meme-board-page/MemeDetailPage';
+import LoginPage from './auth-page/LoginPage';
+import SignUpPage from './auth-page/SignUpPage';
+import { MyPage } from './auth-page/MyPage';
+import { IntroPage } from './intro-page/IntroPage';
+import { BoardListPage } from './board-page/BoardListPage';
+import BoardPostPage from './board-page/BoardPostPage';
+import BoardDetailPage from './board-page/BoardDetailPage';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/intro" element={<IntroPage />}></Route>
         <Route path="/board" element={<BoardListPage />}></Route>
         <Route path="/board/post" element={<BoardPostPage />} />
+        <Route path="/board/detail/:code" element={<BoardDetailPage />} />
       </Routes>
     </Router>
   );
