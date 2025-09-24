@@ -1,17 +1,17 @@
-import React from "react";
-import NavBar from "../nav-bar/navBar";
-import Footer from "../footer/Footer";
-import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import BoardData from "./BoardData";
+import React from 'react';
+import NavBar from '../nav-bar/navBar';
+import Footer from '../footer/Footer';
+import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import BoardData from './BoardData';
 
 export const BoardListPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
 
   const navigate = useNavigate();
   const handleNavigateToPost = () => {
-    navigate("/board/post");
+    navigate('/board/post');
   };
 
   const [res, setRes] = useState({ page: 1, totalPages: 1, data: [] });
@@ -48,22 +48,22 @@ export const BoardListPage = () => {
         <div className="w-[70%]">
           {res.data.length > 0 ? (
             res.data.map((item) => {
-              const formattedDate = new Date(item.createdAt).toLocaleDateString();
+              const formattedDate = new Date(
+                item.createdAt
+              ).toLocaleDateString();
               return (
-                <div key={item.code} className="flex justify-between items-center border-b py-2 px-4 hover:bg-gray-100 rounded transition-colors">
-                  {/* 왼쪽: 제목 */}
-                  <span className="font-GowunBatang">{item.title}</span>
-
-                  {/* 오른쪽: 닉네임 + 날짜 */}
-                  <div className="flex gap-4 items-center">
-                    <span className="text-gray-500">{item.authorNickName}</span>
-                    <span className="text-gray-500">{formattedDate}</span>
-                  </div>
-                </div>
+                <BoardData
+                  code={item.code}
+                  title={item.title}
+                  authorNickName={item.authorNickName}
+                  createdAt={formattedDate}
+                ></BoardData>
               );
             })
           ) : (
-            <p className="text-center text-gray-500 font-GowunBatang py-4">데이터가 존재하지 않습니다.</p>
+            <p className="text-center text-gray-500 font-GowunBatang py-4">
+              데이터가 존재하지 않습니다.
+            </p>
           )}
         </div>
       </div>
@@ -71,14 +71,23 @@ export const BoardListPage = () => {
       {/* 페이지네이션 */}
       <div className="flex justify-center mt-4 mb-6">
         {Array.from({ length: res.totalPages }, (_, i) => (
-          <button key={i} onClick={() => handlePageChange(i + 1)} className={`mx-1 px-3 py-1 rounded ${currentPage === i + 1 ? "bg-blue-300 text-white" : "bg-gray-200"}`}>
+          <button
+            key={i}
+            onClick={() => handlePageChange(i + 1)}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === i + 1 ? 'bg-blue-300 text-white' : 'bg-gray-200'
+            }`}
+          >
             {i + 1}
           </button>
         ))}
       </div>
 
       <div className="flex justify-end mx-7">
-        <button className="font-GowunBatang mx-6 my-5 bg-gray-100 text-black px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-300" onClick={handleNavigateToPost}>
+        <button
+          className="font-GowunBatang mx-6 my-5 bg-gray-100 text-black px-4 py-2 rounded hover:bg-blue-300 transition-colors duration-300"
+          onClick={handleNavigateToPost}
+        >
           글 쓰기
         </button>
       </div>
