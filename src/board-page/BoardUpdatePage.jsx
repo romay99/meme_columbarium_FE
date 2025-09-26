@@ -56,7 +56,7 @@ function BoardUpdatePage() {
   };
 
   const handleSubmit = async () => {
-    const postData = { title, contents };
+    const postData = { code, title, contents };
 
     // 유효성 검사
     if (!title.trim()) {

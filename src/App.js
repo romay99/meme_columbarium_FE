@@ -12,6 +12,7 @@ import { BoardListPage } from './board-page/BoardListPage';
 import BoardPostPage from './board-page/BoardPostPage';
 import BoardDetailPage from './board-page/BoardDetailPage';
 import BoardUpdatePage from './board-page/BoardUpdatePage';
+import MemeUpdatePage from './meme-board-page/MemeUpdatePage';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/board/post" element={<BoardPostPage />} />
         <Route path="/board/detail/:code" element={<BoardDetailPage />} />
         <Route path="/board/update/:code" element={<BoardUpdatePage />} />
+        <Route path="/meme/update/:code" element={<MemeUpdatePage />} />
       </Routes>
     </Router>
   );

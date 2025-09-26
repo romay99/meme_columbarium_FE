@@ -142,6 +142,9 @@ const BoardDetailPage = () => {
           <span className="text-sm font-GowunBatang text-left tracking-wide text-black-100">
             작성자 : {board.authorNickName}
           </span>
+          <span className="text-sm font-GowunBatang text-left tracking-wide text-black-100">
+            작성일 : {new Date(board.createdAt).toLocaleString()}
+          </span>
 
           {/* 닉네임 일치 시 버튼 표시 */}
           {localStorage.getItem('nickname') === board.authorNickName && (
