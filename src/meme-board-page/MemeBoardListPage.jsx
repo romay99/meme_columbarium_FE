@@ -40,7 +40,7 @@ const MemeBoardListPage = () => {
       <NavBar />
 
       <section className="flex flex-col justify-center items-center my-1">
-        <img src="/assets/logo.png" className="w-80 h-50 object-cover" alt="로고" />
+        <img src="/assets/logo.png" className={`w-80 h-50 object-cover ${darkMode ? "filter invert" : ""}`} alt="로고" />
         <p className="mt-4 text-center text-lg font-GowunBatang">{darkMode ? "한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…" : "한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…"}</p>
       </section>
 
