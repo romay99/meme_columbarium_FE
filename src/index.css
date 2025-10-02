@@ -14,3 +14,11 @@
   font-weight: normal;
   font-style: normal;
 }
+
+[data-color-mode="dark"] {
+  --w-md-editor-background: #2424d1;
+  --w-md-editor-color: #cf1919;
+  --w-md-editor-preview-background: #2c2ccf;
+  --w-md-editor-toolbar-background: #0000de;
+  --w-md-editor-preview-color: #f72e2e;
+}

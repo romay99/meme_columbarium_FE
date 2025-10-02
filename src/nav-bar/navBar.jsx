@@ -47,7 +47,7 @@ function NavBar() {
             className={`px-3 py-1 rounded transition-colors duration-300
               ${darkMode ? "bg-gray-700 text-white hover:bg-gray-600" : "bg-gray-300 text-black hover:bg-gray-400"}`}
           >
-            {darkMode ? "라이트 모드" : "다크 모드"}
+            {darkMode ? "☀️" : "🌙"}
           </button>
 
           {!token ? (
