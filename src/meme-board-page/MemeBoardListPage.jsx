@@ -15,11 +15,19 @@ const MemeBoardListPage = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("latest"); // latest: 최신순, likes: 좋아요 순
 
-  const fetchList = async (page) => {
+  const handleSearch = (query) => {
+    setSearchQuery(query); // 검색어 상태 저장
+    setCurrentPage(1); // 검색 시 페이지 1로 초기화
+    fetchList(1, query); // 검색어를 서버 요청에 반영
+  };
+
+  const fetchList = async (page, query = "") => {
     setLoading(true);
     try {
-      const response = await axios.get(`${serverUrl}/meme/list?page=${page}`);
+      const response = await axios.get(`${serverUrl}/meme/list?page=${page}&sort=${sortOption}&keyWord=${encodeURIComponent(query)}`);
       setRes(response.data);
     } catch (error) {
       console.error(error);
@@ -29,8 +37,8 @@ const MemeBoardListPage = () => {
   };
 
   useEffect(() => {
-    fetchList(currentPage);
-  }, [currentPage]);
+    fetchList(currentPage, searchQuery);
+  }, [currentPage, sortOption, searchQuery]);
 
   const handlePageChange = (page) => setCurrentPage(page);
   const handleNavigateToPost = () => navigate("/meme/post");
@@ -43,10 +51,26 @@ const MemeBoardListPage = () => {
         <img src="/assets/logo.png" className={`w-80 h-50 object-cover ${darkMode ? "filter invert" : ""}`} alt="로고" />
         <p className="mt-4 text-center text-lg font-GowunBatang">{darkMode ? "한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…" : "한때 우리를 웃게 했던 모든 순간, 이제는 평안히 쉬길…"}</p>
       </section>
-
-      <SearchBar />
+      <SearchBar onSearch={handleSearch} />
 
       <div className="flex-grow mx-12">
+        <div className="flex justify-end my-4 relative w-40">
+          <select
+            value={sortOption}
+            onChange={(e) => setSortOption(e.target.value)}
+            className={`block w-full px-4 py-2 pr-8 rounded-lg border appearance-none shadow-sm transition-colors duration-300
+      ${darkMode ? "bg-gray-700 text-white border-gray-600 focus:ring-blue-500" : "bg-white text-black border-gray-300 focus:ring-blue-500"} focus:outline-none focus:ring-2`}
+          >
+            <option value="latest">최신 순</option>
+            <option value="likes">좋아요 순</option>
+          </select>
+          {/* 커스텀 화살표 */}
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </div>
+        </div>
         <div className="grid grid-cols-5 gap-8 p-6">
           {res.data.length > 0 ? (
             res.data.map((item) => (
