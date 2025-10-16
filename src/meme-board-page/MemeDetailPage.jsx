@@ -111,7 +111,7 @@ const MemeDetailPage = () => {
   if (!meme) return <p className={`text-center py-10 ${darkMode ? "text-gray-500" : "text-gray-700"}`}>데이터 없음</p>;
 
   return (
-    <div className={`flex flex-col min-h-screen font-GowunBatang transition-colors duration-500 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-100 text-gray-900"}`}>
+    <div className={`flex flex-col min-h-screen font-GowunBatang transition-colors duration-500 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white-100 text-gray-900"}`}>
       <Header />
       <main className="flex-grow container mx-auto px-6 py-10">
         <h1 className={`text-4xl font-bold text-center mb-6 tracking-wide`}>{meme.title}</h1>
@@ -128,7 +128,7 @@ const MemeDetailPage = () => {
           </span>
         </div>
 
-        <div data-color-mode={darkMode ? "dark" : "light"}>
+        <div className={`mx-16 min-h-[200px] rounded-xl border ${darkMode ? "bg-black-900 border-gray-700" : "bg-white-50 border-gray-300"}`} data-color-mode={darkMode ? "dark" : "light"}>
           <MDEditor.Markdown source={meme.contents} className={`prose max-w-none leading-relaxed`} />
         </div>
 
@@ -149,7 +149,7 @@ const MemeDetailPage = () => {
           </button>
         </div>
 
-        <section className="mt-10">
+        <section className="mt-10 mx-14">
           <span>{totalCount}개의 댓글</span>
           <div className="flex gap-2 mb-4">
             <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요" className={`flex-1 border rounded px-3 py-2 ${darkMode ? "bg-gray-700 text-gray-100 placeholder-gray-400" : "bg-gray-200 text-gray-900 placeholder-gray-500"}`} />

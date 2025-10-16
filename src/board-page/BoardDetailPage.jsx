@@ -133,14 +133,14 @@ const BoardDetailPage = () => {
         </div>
 
         {/* 게시글 내용 */}
-        <div data-color-mode={darkMode ? "dark" : "light"}>
+        <div className={`mx-16 min-h-[200px] rounded-xl border ${darkMode ? "bg-black-900 border-gray-700" : "bg-white-50 border-gray-300"}`} data-color-mode={darkMode ? "dark" : "light"}>
           <MDEditor.Markdown source={board.contents} className="prose prose-invert max-w-none leading-relaxed" />
         </div>
 
         <div className={`border-t my-6 w-1/2 mx-auto ${darkMode ? "border-gray-700" : "border-gray-600"}`}></div>
 
         {/* 댓글 섹션 */}
-        <section className="mt-10">
+        <section className="mt-10 mx-14">
           <span>{totalCount}개의 댓글</span>
 
           <div className="flex gap-2 mb-4">
