@@ -141,10 +141,10 @@ function MemeUpdatePage() {
 
       <div className="max-w-4xl mx-auto p-6 flex flex-col space-y-4">
         {/* 제목 */}
-        <div className="flex flex-col">
-          <label className="mb-1 font-semibold">제목</label>
-          <input className={darkMode ? "border rounded p-2 w-full bg-gray-700 text-white" : "border rounded p-2 w-full bg-white text-black"} placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} />
-        </div>
+        {/* <div className="flex flex-col"> */}
+        {/* <label className="mb-1 font-semibold">제목</label> */}
+        {/* <input className={darkMode ? "border rounded p-2 w-full bg-gray-700 text-white" : "border rounded p-2 w-full bg-white text-black"} placeholder="제목" value={title} onChange={(e) => setTitle(e.target.value)} /> */}
+        {/* </div> */}
 
         {/* 날짜 */}
         <div className="flex gap-4">
