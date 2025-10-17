@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import NavBar from "../nav-bar/navBar";
 import Footer from "../footer/Footer";
 import MDEditor from "@uiw/react-md-editor";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 const BoardDetailPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
@@ -26,7 +26,7 @@ const BoardDetailPage = () => {
   useEffect(() => {
     const fetchBoardDetail = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/board/info?code=${code}`);
+        const response = await api.get(`${serverUrl}/board/info?code=${code}`);
         setBoard(response.data);
       } catch (error) {
         console.error("상세 데이터 불러오기 실패:", error);
@@ -40,7 +40,7 @@ const BoardDetailPage = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/comment/board/list`, {
+        const response = await api.get(`${serverUrl}/comment/board/list`, {
           params: { page: commentPage, board: code },
         });
         setComments(response.data.data);
@@ -61,7 +61,7 @@ const BoardDetailPage = () => {
         return;
       }
       const headers = { Authorization: token };
-      await axios.post(`${serverUrl}/comment/board/post`, { boardCode: board.code, contents: newComment }, { headers });
+      await api.post(`${serverUrl}/comment/board/post`, { boardCode: board.code, contents: newComment }, { headers });
       alert("댓글이 등록되었습니다.");
       setNewComment("");
       setCommentPage(1);
@@ -85,7 +85,7 @@ const BoardDetailPage = () => {
         return;
       }
       const headers = { Authorization: token };
-      await axios.delete(`${serverUrl}/board/delete`, {
+      await api.delete(`${serverUrl}/board/delete`, {
         params: { boardCode: board.code },
         headers,
       });

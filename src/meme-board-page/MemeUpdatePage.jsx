@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import axios from "axios";
 import Navbar from "../nav-bar/navBar";
 import Footer from "../footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 function MemeUpdatePage() {
   const navigate = useNavigate();
@@ -34,7 +34,7 @@ function MemeUpdatePage() {
       const token = localStorage.getItem("token") || null;
       const headers = { Authorization: token ? token : null };
 
-      const response = await axios.get(`${serverUrl}/meme/info?code=${code}`, { headers });
+      const response = await api.get(`${serverUrl}/meme/info?code=${code}`, { headers });
       setTitle(response.data.title);
       setContents(response.data.contents);
       setStartDate(response.data.startDate.slice(0, 7));
@@ -48,7 +48,7 @@ function MemeUpdatePage() {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${serverUrl}/meme/categories`);
+      const response = await api.get(`${serverUrl}/meme/categories`);
       setCategories(response.data);
     } catch (error) {
       console.error("카테고리 불러오기 실패", error);
@@ -74,7 +74,7 @@ function MemeUpdatePage() {
     }
 
     try {
-      await axios.post(`${serverUrl}/meme/update`, postData, {
+      await api.post(`${serverUrl}/meme/update`, postData, {
         headers: { Authorization: token, "Content-Type": "application/json" },
       });
       alert("수정 성공!");

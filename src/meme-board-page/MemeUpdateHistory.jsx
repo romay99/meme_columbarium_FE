@@ -4,6 +4,7 @@ import Footer from "../footer/Footer";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 const MemeUpdateHistory = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
@@ -18,7 +19,7 @@ const MemeUpdateHistory = () => {
   const fetchList = async (page) => {
     setLoading(true);
     try {
-      const response = await axios.get(`${serverUrl}/meme/history?page=${page}&code=${code}`);
+      const response = await api.get(`${serverUrl}/meme/history?page=${page}&code=${code}`);
       setRes(response.data);
     } catch (error) {
       console.error("데이터 불러오기 실패", error);

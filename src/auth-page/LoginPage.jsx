@@ -27,9 +27,15 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post(serverUrl + "/member/login", formData, { headers: { "Content-Type": "application/json" } });
+      // ✅ withCredentials 추가: 브라우저가 쿠키(리프레시 토큰) 저장하도록
+      const response = await axios.post(serverUrl + "/member/login", formData, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true, // 중요!
+      });
 
       const { token, type, nickname } = response.data;
+
+      // 액세스 토큰만 로컬스토리지에 저장
       localStorage.setItem("token", `${type} ${token}`);
       localStorage.setItem("nickname", nickname);
 

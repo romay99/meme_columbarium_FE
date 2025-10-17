@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import axios from "axios";
 import Navbar from "../nav-bar/navBar";
 import Footer from "../footer/Footer";
 import { useNavigate } from "react-router-dom";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 function MemePostPage() {
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ function MemePostPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/meme/categories`);
+        const response = await api.get(`${serverUrl}/meme/categories`);
         setCategories(response.data);
       } catch (error) {
         console.error("카테고리 불러오기 실패", error);
@@ -47,7 +47,7 @@ function MemePostPage() {
     }
 
     try {
-      const response = await axios.post(`${serverUrl}/meme/image`, formData, {
+      const response = await api.post(`${serverUrl}/meme/image`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token,
@@ -83,7 +83,7 @@ function MemePostPage() {
     const token = localStorage.getItem("token");
 
     try {
-      await axios.post(`${serverUrl}/meme/upload`, postData, {
+      await api.post(`${serverUrl}/meme/upload`, postData, {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",

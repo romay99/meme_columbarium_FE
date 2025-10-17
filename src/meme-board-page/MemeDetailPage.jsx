@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Header from "../nav-bar/navBar.jsx";
 import Footer from "../footer/Footer";
-import axios from "axios";
 import MDEditor from "@uiw/react-md-editor";
 import { ThemeContext } from "../dark-mode/ThemeContext.js";
+import api from "../api/api.js";
 
 const MemeDetailPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
@@ -34,11 +34,11 @@ const MemeDetailPage = () => {
 
       const headers = { Authorization: token };
       if (meme.likes) {
-        await axios.post(`${serverUrl}/likes/rm`, { memeCode: meme.code }, { headers });
+        await api.post(`${serverUrl}/likes/rm`, { memeCode: meme.code }, { headers });
         setMeme((prev) => ({ ...prev, likes: false }));
         setLikesCount((prev) => prev - 1);
       } else {
-        await axios.post(`${serverUrl}/likes/add`, { memeCode: meme.code }, { headers });
+        await api.post(`${serverUrl}/likes/add`, { memeCode: meme.code }, { headers });
         setMeme((prev) => ({ ...prev, likes: true }));
         setLikesCount((prev) => prev + 1);
       }
@@ -53,7 +53,7 @@ const MemeDetailPage = () => {
       try {
         const token = localStorage.getItem("token");
         const headers = { Authorization: token || null };
-        const res = await axios.get(`${serverUrl}/meme/info?code=${code}`, {
+        const res = await api.get(`${serverUrl}/meme/info?code=${code}`, {
           headers,
         });
         setMeme(res.data);
@@ -70,7 +70,7 @@ const MemeDetailPage = () => {
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`${serverUrl}/comment/meme/list`, {
+        const res = await api.get(`${serverUrl}/comment/meme/list`, {
           params: { page: commentPage, meme: code },
         });
         setComments(res.data.data);
@@ -91,7 +91,7 @@ const MemeDetailPage = () => {
         return;
       }
       const headers = { Authorization: token };
-      await axios.post(`${serverUrl}/comment/meme/post`, { memeCode: meme.code, contents: newComment }, { headers });
+      await api.post(`${serverUrl}/comment/meme/post`, { memeCode: meme.code, contents: newComment }, { headers });
       setNewComment("");
       setCommentPage(1);
       window.location.reload();

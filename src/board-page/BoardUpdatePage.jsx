@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import axios from "axios";
 import Navbar from "../nav-bar/navBar";
 import Footer from "../footer/Footer";
 import { useParams, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 function BoardUpdatePage() {
   const navigate = useNavigate();
@@ -24,7 +24,7 @@ function BoardUpdatePage() {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(`${serverUrl}/board/image`, formData, {
+      const response = await api.post(`${serverUrl}/board/image`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -73,7 +73,7 @@ function BoardUpdatePage() {
     }
 
     try {
-      await axios.post(`${serverUrl}/board/update`, postData, {
+      await api.post(`${serverUrl}/board/update`, postData, {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
@@ -102,7 +102,7 @@ function BoardUpdatePage() {
   useEffect(() => {
     const fetchBoardDetail = async () => {
       try {
-        const response = await axios.get(`${serverUrl}/board/info?code=${code}`);
+        const response = await api.get(`${serverUrl}/board/info?code=${code}`);
 
         if (response.data.authorNickName !== localStorage.getItem("nickname")) {
           alert("비 정상적인 접근입니다.");

@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import MDEditor from "@uiw/react-md-editor";
-import axios from "axios";
 import Navbar from "../nav-bar/navBar";
 import Footer from "../footer/Footer";
 import { useNavigate } from "react-router-dom";
+import api from "../api/api";
 
 function BoardPostPage() {
   const navigate = useNavigate();
@@ -19,7 +19,7 @@ function BoardPostPage() {
     formData.append("file", file);
 
     try {
-      const response = await axios.post(`${serverUrl}/board/image`, formData, {
+      const response = await api.post(`${serverUrl}/board/image`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -71,7 +71,7 @@ function BoardPostPage() {
     }
 
     try {
-      const response = await axios.post(`${serverUrl}/board/post`, postData, {
+      const response = await api.post(`${serverUrl}/board/post`, postData, {
         headers: {
           Authorization: token,
           "Content-Type": "application/json",
