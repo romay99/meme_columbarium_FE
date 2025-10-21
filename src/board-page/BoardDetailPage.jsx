@@ -103,7 +103,7 @@ const BoardDetailPage = () => {
   };
 
   return (
-    <div className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"} min-h-screen flex flex-col`}>
+    <div className={`${darkMode ? "bg-gray-900 text-gray-100" : "bg-white-50 text-gray-900"} min-h-screen flex flex-col`}>
       <NavBar />
 
       <main className="flex-grow container mx-auto px-6 py-10">

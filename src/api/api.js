@@ -35,7 +35,7 @@ api.interceptors.response.use(
         const newToken = res.data.accessToken;
 
         // ✅ 로컬스토리지 갱신
-        localStorage.setItem("token", newToken);
+        localStorage.setItem("token", "Bearer " + newToken);
 
         // ✅ Authorization 헤더 갱신 후 원래 요청 재시도
         originalRequest.headers.Authorization = `Bearer ${newToken}`;

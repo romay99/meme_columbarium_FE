@@ -19,39 +19,39 @@ function BoardUpdatePage() {
   const [loading, setLoading] = useState(true);
 
   // 이미지 업로드 및 커서 위치 삽입
-  const handleImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
+  // const handleImageUpload = async (file) => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
 
-    try {
-      const response = await api.post(`${serverUrl}/board/image`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+  //   try {
+  //     const response = await api.post(`${serverUrl}/board/image`, formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
 
-      const imageUrl = response.data;
+  //     const imageUrl = response.data;
 
-      const textarea = editorRef.current?.textarea;
-      if (textarea) {
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const newText = contents.substring(0, start) + `![이미지](${imageUrl})` + contents.substring(end);
-        setContents(newText);
-      } else {
-        setContents((prev) => prev + `![이미지](${imageUrl})`);
-      }
-    } catch (error) {
-      console.error("이미지 업로드 실패", error);
-    }
-  };
+  //     const textarea = editorRef.current?.textarea;
+  //     if (textarea) {
+  //       const start = textarea.selectionStart;
+  //       const end = textarea.selectionEnd;
+  //       const newText = contents.substring(0, start) + `![이미지](${imageUrl})` + contents.substring(end);
+  //       setContents(newText);
+  //     } else {
+  //       setContents((prev) => prev + `![이미지](${imageUrl})`);
+  //     }
+  //   } catch (error) {
+  //     console.error("이미지 업로드 실패", error);
+  //   }
+  // };
 
-  // 드래그앤드롭 이벤트
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      handleImageUpload(event.dataTransfer.files[0]);
-      event.dataTransfer.clearData();
-    }
-  };
+  // // 드래그앤드롭 이벤트
+  // const handleDrop = (event) => {
+  //   event.preventDefault();
+  //   if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+  //     handleImageUpload(event.dataTransfer.files[0]);
+  //     event.dataTransfer.clearData();
+  //   }
+  // };
 
   const handleSubmit = async () => {
     const postData = { code, title, contents };
@@ -134,7 +134,8 @@ function BoardUpdatePage() {
         </div>
 
         {/* 마크다운 에디터 */}
-        <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()} data-color-mode={darkMode ? "dark" : "light"}>
+        {/* <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()} data-color-mode={darkMode ? "dark" : "light"}> */}
+        <div data-color-mode={darkMode ? "dark" : "light"}>
           <MDEditor
             value={contents}
             onChange={setContents}

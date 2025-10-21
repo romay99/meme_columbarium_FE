@@ -14,40 +14,41 @@ function BoardPostPage() {
   const editorRef = useRef(null);
 
   // 이미지 업로드 및 커서 위치 삽입
-  const handleImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
+  // 자게 에서는 S3 일단 쓰지말자
+  // const handleImageUpload = async (file) => {
+  //   const formData = new FormData();
+  //   formData.append("file", file);
 
-    try {
-      const response = await api.post(`${serverUrl}/board/image`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+  //   try {
+  //     const response = await api.post(`${serverUrl}/board/image`, formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //     });
 
-      const imageUrl = response.data;
+  //     const imageUrl = response.data;
 
-      // 커서 위치에 이미지 삽입
-      const textarea = editorRef.current?.textarea;
-      if (textarea) {
-        const start = textarea.selectionStart;
-        const end = textarea.selectionEnd;
-        const newText = contents.substring(0, start) + `![이미지](${imageUrl})` + contents.substring(end);
-        setContents(newText);
-      } else {
-        setContents((prev) => prev + `![이미지](${imageUrl})`);
-      }
-    } catch (error) {
-      console.error("이미지 업로드 실패", error);
-    }
-  };
+  //     // 커서 위치에 이미지 삽입
+  //     const textarea = editorRef.current?.textarea;
+  //     if (textarea) {
+  //       const start = textarea.selectionStart;
+  //       const end = textarea.selectionEnd;
+  //       const newText = contents.substring(0, start) + `![이미지](${imageUrl})` + contents.substring(end);
+  //       setContents(newText);
+  //     } else {
+  //       setContents((prev) => prev + `![이미지](${imageUrl})`);
+  //     }
+  //   } catch (error) {
+  //     console.error("이미지 업로드 실패", error);
+  //   }
+  // };
 
   // 드래그앤드롭 이벤트
-  const handleDrop = (event) => {
-    event.preventDefault();
-    if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
-      handleImageUpload(event.dataTransfer.files[0]);
-      event.dataTransfer.clearData();
-    }
-  };
+  // const handleDrop = (event) => {
+  //   event.preventDefault();
+  //   if (event.dataTransfer.files && event.dataTransfer.files.length > 0) {
+  //     handleImageUpload(event.dataTransfer.files[0]);
+  //     event.dataTransfer.clearData();
+  //   }
+  // };
 
   const handleSubmit = async () => {
     const postData = { title, contents };
@@ -108,14 +109,15 @@ function BoardPostPage() {
         </div>
 
         {/* 마크다운 에디터 + 드래그 이미지 */}
-        <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()} className="border rounded p-2">
+        {/* <div onDrop={handleDrop} onDragOver={(e) => e.preventDefault()} className="border rounded p-2"> */}
+        <div className="border rounded p-2">
           <MDEditor
             value={contents}
             onChange={setContents}
             height={400}
             textareaProps={{
               ref: editorRef,
-              placeholder: "마크다운 작성 (이미지 드래그앤드롭 가능)",
+              placeholder: "마크다운 작성",
             }}
           />
         </div>

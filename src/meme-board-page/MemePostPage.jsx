@@ -36,17 +36,68 @@ function MemePostPage() {
   }, [serverUrl]);
 
   const handleImageUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
+    // 파일 타입 체크
+    if (!file.type.match(/^image\/(jpeg|png)$/)) {
+      alert("JPG 또는 PNG 파일만 업로드 가능합니다.");
       return;
     }
+    const resizeImage = (file, maxWidth = 1024, maxHeight = 1024, quality = 0.7) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          img.src = e.target.result;
+        };
+
+        img.onload = () => {
+          let { width, height } = img;
+
+          // 비율 유지
+          if (width > maxWidth || height > maxHeight) {
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+            width = width * ratio;
+            height = height * ratio;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const resizedFile = new File([blob], file.name, { type: "image/jpeg" });
+                resolve(resizedFile);
+              } else {
+                reject(new Error("이미지 리사이징 실패"));
+              }
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+    };
 
     try {
+      const resizedFile = await resizeImage(file);
+
+      const formData = new FormData();
+      formData.append("file", resizedFile);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
       const response = await api.post(`${serverUrl}/meme/image`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",

@@ -63,6 +63,95 @@ function MemeUpdatePage() {
     setShowConfirmModal(true);
   };
 
+  // MemeUpdatePage 안에서
+
+  // 1. 이미지 업로드 핸들러 추가
+  const handleImageUpload = async (file) => {
+    // JPG/PNG만 허용
+    if (!file.type.match(/^image\/(jpeg|png)$/)) {
+      alert("JPG 또는 PNG 파일만 업로드 가능합니다.");
+      return;
+    }
+
+    const resizeImage = (file, maxWidth = 1024, maxHeight = 1024, quality = 0.7) => {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const reader = new FileReader();
+
+        reader.onload = (e) => {
+          img.src = e.target.result;
+        };
+
+        img.onload = () => {
+          let { width, height } = img;
+
+          if (width > maxWidth || height > maxHeight) {
+            const ratio = Math.min(maxWidth / width, maxHeight / height);
+            width = width * ratio;
+            height = height * ratio;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, width, height);
+
+          canvas.toBlob(
+            (blob) => {
+              if (blob) {
+                const resizedFile = new File([blob], file.name, { type: "image/jpeg" });
+                resolve(resizedFile);
+              } else {
+                reject(new Error("이미지 리사이징 실패"));
+              }
+            },
+            "image/jpeg",
+            quality
+          );
+        };
+
+        reader.onerror = (err) => reject(err);
+        reader.readAsDataURL(file);
+      });
+    };
+
+    try {
+      const resizedFile = await resizeImage(file);
+
+      const formData = new FormData();
+      formData.append("file", resizedFile);
+
+      const token = localStorage.getItem("token");
+      if (!token) {
+        alert("로그인이 필요합니다.");
+        navigate("/login");
+        return;
+      }
+
+      const response = await api.post(`${serverUrl}/meme/image`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token,
+        },
+      });
+
+      const imageUrl = response.data;
+      const textarea = editorRef.current?.textarea;
+      if (textarea) {
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const newText = contents.substring(0, start) + `![이미지](${imageUrl})` + contents.substring(end);
+        setContents(newText);
+      } else {
+        setContents((prev) => prev + `![이미지](${imageUrl})`);
+      }
+    } catch (error) {
+      console.error("이미지 업로드 실패", error);
+      alert("이미지 업로드에 실패했습니다.");
+    }
+  };
+
   const updateMeme = async () => {
     const postData = { title, startDate, endDate, contents, category, code };
     const token = localStorage.getItem("token");
@@ -172,7 +261,20 @@ function MemeUpdatePage() {
 
         {/* 마크다운 에디터 */}
         <div className="border rounded p-2" data-color-mode={darkMode ? "dark" : "light"}>
-          <MDEditor value={contents} onChange={setContents} height={400} textareaProps={{ ref: editorRef, placeholder: "마크다운 작성" }} />
+          <MDEditor
+            value={contents}
+            onChange={setContents}
+            height={400}
+            textareaProps={{
+              ref: editorRef,
+              placeholder: "마크다운 작성",
+              onDrop: (e) => {
+                e.preventDefault();
+                const files = Array.from(e.dataTransfer.files);
+                files.forEach((file) => handleImageUpload(file));
+              },
+            }}
+          />
         </div>
 
         {/* 미리보기 */}
