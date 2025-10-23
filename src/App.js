@@ -18,10 +18,10 @@ import { ThemeProvider } from './dark-mode/ThemeContext';
 import usePageTracking from './api/usePageTracking';
 
 function App() {
-  usePageTracking();
   return (
     <ThemeProvider>
       <Router>
+        <PageTrackingWrapper /> {/* Router 안에서 호출되도록 */}
         <Routes>
           <Route path="/" element={<MainPage />} />
           <Route path="/meme" element={<MemeBoardListPage />} />
@@ -44,6 +44,12 @@ function App() {
       </Router>
     </ThemeProvider>
   );
+}
+
+// Router 안에서 페이지 트래킹 훅 호출
+function PageTrackingWrapper() {
+  usePageTracking();
+  return null; // UI 렌더링 없음
 }
 
 export default App;
