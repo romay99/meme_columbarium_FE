@@ -60,6 +60,11 @@ function MemeUpdatePage() {
       alert("모든 필드를 입력해주세요.");
       return;
     }
+    // 날짜 유효성 검사 추가
+    if (startDate > endDate) {
+      alert("밈 흥한 날짜는 밈 망한 날짜보다 늦을 수 없습니다.");
+      return;
+    }
     setShowConfirmModal(true);
   };
 

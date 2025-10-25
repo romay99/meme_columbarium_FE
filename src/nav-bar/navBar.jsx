@@ -1,11 +1,13 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import api from "../api/api";
 
 function NavBar() {
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const { darkMode, setDarkMode } = useContext(ThemeContext);
+  const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
 
   const menus = [
     { name: "홈", path: "/" },
@@ -16,6 +18,7 @@ function NavBar() {
   ];
 
   const handleLogout = () => {
+    const res = api.post(`${serverUrl}/member/logout`, {}, { withCredentials: true });
     localStorage.clear();
     window.location.reload();
   };
