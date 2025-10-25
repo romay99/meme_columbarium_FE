@@ -142,7 +142,7 @@ const MemeDetailPage = () => {
           </div>
         </div>
 
-        <div className={`mx-16 min-h-[200px] rounded-xl border ${darkMode ? "bg-black-900 border-gray-700" : "bg-white-50 border-gray-300"}`} data-color-mode={darkMode ? "dark" : "light"}>
+        <div className={`mx-16 min-h-[200px] rounded-xl ${darkMode ? "bg-black-900" : "bg-white-50"}`} data-color-mode={darkMode ? "dark" : "light"}>
           <MDEditor.Markdown source={meme.contents} className={`prose ${darkMode ? "prose-invert" : ""} max-w-none`} />
         </div>
 
