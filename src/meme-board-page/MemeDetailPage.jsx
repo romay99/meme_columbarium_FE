@@ -109,7 +109,7 @@ const MemeDetailPage = () => {
   if (!meme) return <p className={`text-center py-10 ${darkMode ? "text-gray-500" : "text-gray-700"}`}>데이터 없음</p>;
 
   return (
-    <div className={`flex flex-col min-h-screen font-GowunBatang transition-colors duration-500 ${darkMode ? "bg-gray-900 text-gray-100" : "bg-white-100 text-gray-900"}`}>
+    <div className={`flex flex-col min-h-screen font-GowunBatang transition-colors ${darkMode ? "bg-[rgb(13,17,23)] text-gray-100" : "bg-white-100 text-gray-900"}`}>
       <Header />
       <main className="flex-grow container mx-auto px-6 py-10">
         <h1 className={`text-4xl font-bold text-center mb-6 tracking-wide`}>{meme.title}</h1>
@@ -131,7 +131,7 @@ const MemeDetailPage = () => {
             {/* 썸네일 */}
             <img
               // src="/assets/test.png"
-              src={meme.thumbnail}
+              // src={meme.thumbnail}
               alt="밈 썸네일"
               className="w-64 h-64 rounded-lg shadow-md object-cover"
             />
