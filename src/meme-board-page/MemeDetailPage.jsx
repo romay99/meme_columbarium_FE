@@ -56,6 +56,10 @@ const MemeDetailPage = () => {
         const res = await api.get(`${serverUrl}/meme/info?code=${code}`, {});
         setMeme(res.data);
         setLikesCount(res.data.likesCount || 0);
+        if (res.data.newAccessToken !== "" || res.data.newAccessToken !== null) {
+          // 만약 새로운 액세스 토큰이 발급되었다면 토큰 갈아끼우기
+          localStorage.setItem("token", "Bearer " + res.data.newAccessToken);
+        }
       } catch (err) {
         console.error(err);
       } finally {
