@@ -17,10 +17,15 @@ function NavBar() {
     { name: "마이 페이지", path: "/mypage" },
   ];
 
-  const handleLogout = () => {
-    const res = api.post(`${serverUrl}/member/logout`, {}, { withCredentials: true });
-    localStorage.clear();
-    window.location.reload();
+  const handleLogout = async () => {
+    try {
+      await api.post(`${serverUrl}/member/logout`, {}, { withCredentials: true });
+      localStorage.clear();
+      window.location.reload();
+    } catch (err) {
+      console.error("로그아웃 실패:", err);
+      alert("로그아웃에 실패했습니다.");
+    }
   };
 
   return (
