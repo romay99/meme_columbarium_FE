@@ -17,6 +17,10 @@ function BoardPostPage() {
 
   const editorRef = useRef(null);
 
+  useEffect(() => {
+    verifyToken(); // 토큰 유효성 검사 한번 호출
+  }, []);
+
   const handleSubmit = async () => {
     const postData = { title, contents };
 
@@ -61,6 +65,14 @@ function BoardPostPage() {
       } else {
         alert("업로드에 실패했습니다. 다시 시도해주세요.");
       }
+    }
+  };
+
+  const verifyToken = async () => {
+    try {
+      await api.post(`${serverUrl}/member/check-verify`);
+    } catch (err) {
+      console.error("토큰 검증 실패:", err);
     }
   };
 

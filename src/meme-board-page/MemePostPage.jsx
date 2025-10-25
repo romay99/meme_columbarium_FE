@@ -38,8 +38,12 @@ function MemePostPage() {
     fetchCategories();
   }, [serverUrl]);
 
-  const verifyToken = () => {
-    api.post(`${serverUrl}/member/check-verify`);
+  const verifyToken = async () => {
+    try {
+      await api.post(`${serverUrl}/member/check-verify`);
+    } catch (err) {
+      console.error("토큰 검증 실패:", err);
+    }
   };
 
   const handleImageUpload = async (file) => {
