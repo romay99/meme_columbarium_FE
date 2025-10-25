@@ -331,7 +331,9 @@ function MemePostPage() {
         {/* 미리보기 */}
         <div data-color-mode={darkMode ? "dark" : "light"}>
           <h3 className="font-semibold mb-2">미리보기</h3>
-          <MDEditor.Markdown source={contents} />
+          <div className={`prose ${darkMode ? "prose-invert" : ""} max-w-none`}>
+            <MDEditor.Markdown source={contents} />
+          </div>
         </div>
 
         {/* 제출 버튼 */}

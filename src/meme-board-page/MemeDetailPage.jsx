@@ -139,7 +139,7 @@ const MemeDetailPage = () => {
         </div>
 
         <div className={`mx-16 min-h-[200px] rounded-xl border ${darkMode ? "bg-black-900 border-gray-700" : "bg-white-50 border-gray-300"}`} data-color-mode={darkMode ? "dark" : "light"}>
-          <MDEditor.Markdown source={meme.contents} className={`prose max-w-none leading-relaxed`} />
+          <MDEditor.Markdown source={meme.contents} className={`prose ${darkMode ? "prose-invert" : ""} max-w-none`} />
         </div>
 
         <section className="flex justify-center mt-10 items-center gap-3">
