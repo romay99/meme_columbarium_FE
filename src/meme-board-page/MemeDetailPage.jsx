@@ -131,7 +131,7 @@ const MemeDetailPage = () => {
             {/* 썸네일 */}
             <img
               // src="/assets/test.png"
-              // src={meme.thumbnail}
+              src={meme.thumbnail}
               alt="밈 썸네일"
               className="w-64 h-64 rounded-lg shadow-md object-cover"
             />
