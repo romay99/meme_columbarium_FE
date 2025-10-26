@@ -31,8 +31,8 @@ function NavBar() {
   return (
     <nav className={`shadow-md transition-colors duration-500 ${darkMode ? "bg-gray-800" : "bg-white"}`}>
       <div className="max-w-6xl mx-auto px-6 py-2 flex justify-between items-center">
-        {/* PC 메뉴 */}
-        <div className="hidden md:flex space-x-8">
+        {/* 좌측 메뉴 (PC) */}
+        <div className="hidden md:flex space-x-8 items-center">
           {menus.map((menu, idx) => {
             if (menu.name === "마이 페이지" && !token) return null;
             return (
@@ -57,7 +57,10 @@ function NavBar() {
           >
             ☰
           </button>
+        </div>
 
+        {/* 우측 버튼 그룹 (PC & 모바일) */}
+        <div className="flex items-center space-x-2">
           {/* 다크모드 버튼 */}
           <button
             onClick={() => setDarkMode(!darkMode)}
@@ -66,27 +69,27 @@ function NavBar() {
           >
             {darkMode ? "☀️" : "🌙"}
           </button>
-        </div>
 
-        {/* 로그인/로그아웃 버튼 (PC) */}
-        <div className="hidden md:flex items-center space-x-2">
-          {!token ? (
-            <Link
-              to="/login"
-              className={`font-GowunBatangBold px-4 py-2 rounded-lg transition-colors duration-300
-                ${darkMode ? "bg-gray-600 text-white hover:bg-gray-500" : "bg-gray-600 text-white hover:bg-blue-700"}`}
-            >
-              로그인
-            </Link>
-          ) : (
-            <button
-              onClick={handleLogout}
-              className={`font-GowunBatangBold px-4 py-2 rounded-lg transition-colors duration-300
-                ${darkMode ? "bg-gray-600 text-white hover:bg-gray-500" : "bg-gray-600 text-white hover:bg-green-700"}`}
-            >
-              로그아웃
-            </button>
-          )}
+          {/* 로그인/로그아웃 버튼 (PC) */}
+          <div className="hidden md:flex items-center space-x-2">
+            {!token ? (
+              <Link
+                to="/login"
+                className={`font-GowunBatangBold px-4 py-2 rounded-lg transition-colors duration-300
+                  ${darkMode ? "bg-gray-600 text-white hover:bg-gray-500" : "bg-gray-600 text-white hover:bg-blue-700"}`}
+              >
+                로그인
+              </Link>
+            ) : (
+              <button
+                onClick={handleLogout}
+                className={`font-GowunBatangBold px-4 py-2 rounded-lg transition-colors duration-300
+                  ${darkMode ? "bg-gray-600 text-white hover:bg-gray-500" : "bg-gray-600 text-white hover:bg-green-700"}`}
+              >
+                로그아웃
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
@@ -119,7 +122,7 @@ function NavBar() {
             );
           })}
 
-          {/* 로그인/로그아웃 버튼 (모바일 사이드바) */}
+          {/* 로그인/로그아웃 버튼 (모바일) */}
           {!token ? (
             <Link
               to="/login"

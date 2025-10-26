@@ -10,7 +10,7 @@ const MemeDetailPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
   const { code } = useParams();
   const navigate = useNavigate();
-  const { darkMode } = useContext(ThemeContext); // ThemeContext 사용
+  const { darkMode } = useContext(ThemeContext);
 
   const [meme, setMeme] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -32,7 +32,6 @@ const MemeDetailPage = () => {
         return;
       }
 
-      const headers = { Authorization: token };
       if (meme.likes) {
         await api.post(`${serverUrl}/likes/rm`, { memeCode: meme.code });
         setMeme((prev) => ({ ...prev, likes: false }));
@@ -54,11 +53,9 @@ const MemeDetailPage = () => {
     const fetchMeme = async () => {
       try {
         const res = await api.get(`${serverUrl}/meme/info?code=${code}`, {});
-        console.log(res);
         setMeme(res.data);
         setLikesCount(res.data.likesCount || 0);
-        if (res.data.newAccessToken !== null) {
-          // 만약 새로운 액세스 토큰이 발급되었다면 토큰 갈아끼우기
+        if (res.data.newAccessToken) {
           localStorage.setItem("token", "Bearer " + res.data.newAccessToken);
         }
       } catch (err) {
@@ -93,8 +90,7 @@ const MemeDetailPage = () => {
         alert("로그인이 필요합니다.");
         return;
       }
-      const headers = { Authorization: token };
-      await api.post(`${serverUrl}/comment/meme/post`, { memeCode: meme.code, contents: newComment }, { headers });
+      await api.post(`${serverUrl}/comment/meme/post`, { memeCode: meme.code, contents: newComment }, { headers: { Authorization: token } });
       setNewComment("");
       setCommentPage(1);
       window.location.reload();
@@ -116,12 +112,12 @@ const MemeDetailPage = () => {
   return (
     <div className={`flex flex-col min-h-screen font-GowunBatang transition-colors ${darkMode ? "bg-[rgb(13,17,23)] text-gray-100" : "bg-white-100 text-gray-900"}`}>
       <Header />
-      <main className="flex-grow container mx-auto px-6 py-10">
-        <h1 className={`text-4xl font-bold text-center mb-6 tracking-wide`}>{meme.title}</h1>
+      <main className="flex-grow container mx-auto px-4 sm:px-6 md:px-10 py-6 sm:py-10">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-4 sm:mb-6 tracking-wide">{meme.title}</h1>
 
-        <div className={`border-t my-6 w-1/2 mx-auto ${darkMode ? "border-gray-700" : "border-gray-300"}`}></div>
+        <div className={`border-t my-4 sm:my-6 w-3/4 sm:w-1/2 mx-auto ${darkMode ? "border-gray-700" : "border-gray-300"}`}></div>
 
-        <div className={`flex flex-wrap justify-center gap-6 text-sm mb-8`}>
+        <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-4 sm:mb-6">
           <span>📂 {meme.category}</span>
           <span>👤 작성자: {meme.authorNickName}</span>
           <span>🕒 등록일: {new Date(meme.createdAt).toLocaleDateString()}</span>
@@ -131,72 +127,64 @@ const MemeDetailPage = () => {
           </span>
         </div>
 
-        <div className="flex justify-center mb-6">
-          <div className="relative inline-block">
-            {/* 썸네일 */}
-            <img
-              // src="/assets/test.png"
-              src={meme.thumbnail}
-              alt="밈 썸네일"
-              className="w-64 h-64 rounded-lg shadow-md object-cover"
-            />
-          </div>
+        <div className="flex justify-center mb-4 sm:mb-6">
+          <img src={meme.thumbnail} alt="밈 썸네일" className="w-40 sm:w-52 md:w-64 h-40 sm:h-52 md:h-64 rounded-lg shadow-md object-cover" />
         </div>
 
-        <div className={`mx-16 min-h-[200px] rounded-xl ${darkMode ? "bg-black-900" : "bg-white-50"}`} data-color-mode={darkMode ? "dark" : "light"}>
-          <MDEditor.Markdown source={meme.contents} className={`prose ${darkMode ? "prose-invert" : ""} max-w-none`} />
+        <div className="mx-2 sm:mx-6 md:mx-16 p-4 sm:p-6 rounded-xl" data-color-mode={darkMode ? "dark" : "light"}>
+          <MDEditor.Markdown source={meme.contents} className={`prose max-w-none ${darkMode ? "prose-invert" : ""}`} />
         </div>
 
-        <section className="flex justify-center mt-10 items-center gap-3">
+        <section className="flex flex-col sm:flex-row justify-center items-center gap-3 mt-4 sm:mt-6">
           <button onClick={handleLikeClick} className={`flex items-center gap-2 px-4 py-2 rounded-full shadow-md transition-all duration-200 ${meme.likes ? "bg-orange-600 hover:bg-orange-500" : darkMode ? "bg-gray-700 hover:bg-gray-600" : "bg-gray-300 hover:bg-gray-400 text-gray-900"}`}>
-            <img src="/assets/국화-아이콘.png" alt="꽃" className="w-7 h-7 object-contain" />
-            <span className="font-GowunBatangBold text-sm">꽃 한송이</span>
+            <img src="/assets/국화-아이콘.png" alt="꽃" className="w-6 sm:w-7 h-6 sm:h-7 object-contain" />
+            <span className="font-GowunBatangBold text-sm sm:text-base">꽃 한송이</span>
           </button>
-          <span className="font-GowunBatangBold text-lg">총 {likesCount} 송이</span>
+          <span className="font-GowunBatangBold text-sm sm:text-base">총 {likesCount} 송이</span>
         </section>
 
-        <div className="flex justify-end gap-3 mt-4">
-          <button onClick={() => navigate(`/meme/update/${code}`)} className={`px-4 py-2 rounded ${darkMode ? "bg-green-700 hover:bg-green-500 text-white" : "bg-green-300 hover:bg-green-400 text-gray-900"}`}>
+        <div className="flex flex-wrap sm:flex-nowrap justify-end gap-2 sm:gap-3 mt-4">
+          <button onClick={() => navigate(`/meme/update/${code}`)} className={`px-3 sm:px-4 py-2 rounded ${darkMode ? "bg-green-700 hover:bg-green-500 text-white" : "bg-green-300 hover:bg-green-400 text-gray-900"}`}>
             밈 수정하기
           </button>
-          <button onClick={() => navigate(`/meme/update-history/${meme.orgMemeCode}`)} className={`px-4 py-2 rounded ${darkMode ? "bg-blue-700 hover:bg-blue-500 text-white" : "bg-blue-300 hover:bg-blue-400 text-gray-900"}`}>
+          <button onClick={() => navigate(`/meme/update-history/${meme.orgMemeCode}`)} className={`px-3 sm:px-4 py-2 rounded ${darkMode ? "bg-blue-700 hover:bg-blue-500 text-white" : "bg-blue-300 hover:bg-blue-400 text-gray-900"}`}>
             수정기록 열람
           </button>
         </div>
 
-        <section className="mt-10 mx-14">
+        <section className="mt-6 sm:mt-10 mx-2 sm:mx-4 md:mx-14">
           <span>{totalCount}개의 댓글</span>
-          <div className="flex gap-2 mb-4">
-            <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요" className={`flex-1 border rounded px-3 py-2 ${darkMode ? "bg-gray-700 text-gray-100 placeholder-gray-400" : "bg-gray-200 text-gray-900 placeholder-gray-500"}`} />
-            <button onClick={handleAddComment} className={`px-4 py-2 rounded ${darkMode ? "bg-gray-600 hover:bg-gray-500 text-white" : "bg-gray-400 hover:bg-gray-300 text-gray-900"}`}>
+          <div className="flex flex-col sm:flex-row gap-2 mt-2 mb-4">
+            <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="댓글을 입력하세요" className={`flex-1 border rounded px-2 sm:px-3 py-2 ${darkMode ? "bg-gray-700 text-gray-100 placeholder-gray-400" : "bg-gray-200 text-gray-900 placeholder-gray-500"}`} />
+            <button onClick={handleAddComment} className={`px-3 sm:px-4 py-2 rounded ${darkMode ? "bg-gray-600 hover:bg-gray-500 text-white" : "bg-gray-400 hover:bg-gray-300 text-gray-900"}`}>
               등록
             </button>
           </div>
 
-          <ul className="space-y-3">
+          <ul className="space-y-2 sm:space-y-3">
             {comments.map((c) => (
-              <li key={c.code} className={`border rounded px-4 py-2 ${darkMode ? "bg-gray-800 text-gray-100 border-gray-700" : "bg-white text-gray-900 border-gray-300"}`}>
-                <div className="flex justify-between text-sm mb-1">
+              <li key={c.code} className={`border rounded px-3 sm:px-4 py-2 ${darkMode ? "bg-gray-800 text-gray-100 border-gray-700" : "bg-white text-gray-900 border-gray-300"}`}>
+                <div className="flex justify-between text-xs sm:text-sm mb-1">
                   <span>{c.authorNickName}</span>
                   <span>{new Date(c.createdAt).toLocaleString()}</span>
                 </div>
-                <p>{c.contents}</p>
+                <p className="text-sm sm:text-base">{c.contents}</p>
               </li>
             ))}
           </ul>
 
           {/* 페이지네이션 */}
-          <div className="flex justify-center mt-4 gap-2">
+          <div className="flex flex-wrap justify-center mt-3 gap-1 sm:gap-2">
             {Array.from({ length: totalCommentPages }, (_, i) => (
-              <button key={i} onClick={() => setCommentPage(i + 1)} className={`px-3 py-1 rounded ${i + 1 === commentPage ? "bg-blue-500 text-white" : darkMode ? "bg-gray-700 text-white" : "bg-gray-300 text-black"}`}>
+              <button key={i} onClick={() => setCommentPage(i + 1)} className={`px-2 sm:px-3 py-1 rounded text-sm sm:text-base ${i + 1 === commentPage ? "bg-blue-500 text-white" : darkMode ? "bg-gray-700 text-white" : "bg-gray-300 text-black"}`}>
                 {i + 1}
               </button>
             ))}
           </div>
         </section>
 
-        <section className="flex justify-end mt-10">
-          <button onClick={handleNavigateToList} className={`mx-3 my-5 px-4 py-2 rounded ${darkMode ? "bg-gray-700 hover:bg-blue-600 text-white" : "bg-gray-300 hover:bg-blue-400 text-gray-900"}`}>
+        <section className="flex justify-end mt-4 sm:mt-6 mx-2 sm:mx-6 md:mx-14">
+          <button onClick={handleNavigateToList} className={`px-4 py-2 rounded ${darkMode ? "bg-gray-700 hover:bg-blue-600 text-white" : "bg-gray-300 hover:bg-blue-400 text-gray-900"}`}>
             목록
           </button>
         </section>
