@@ -34,12 +34,12 @@ const MemeDetailPage = () => {
 
       const headers = { Authorization: token };
       if (meme.likes) {
-        await api.post(`${serverUrl}/likes/rm`, { memeCode: meme.code }, { headers });
+        await api.post(`${serverUrl}/likes/rm`, { memeCode: meme.code });
         setMeme((prev) => ({ ...prev, likes: false }));
         setLikesCount((prev) => prev - 1);
         alert("꽃 한송이 거두어갑니다.");
       } else {
-        await api.post(`${serverUrl}/likes/add`, { memeCode: meme.code }, { headers });
+        await api.post(`${serverUrl}/likes/add`, { memeCode: meme.code });
         setMeme((prev) => ({ ...prev, likes: true }));
         setLikesCount((prev) => prev + 1);
         alert("꽃 한송이 놓고갑니다.");
@@ -54,9 +54,10 @@ const MemeDetailPage = () => {
     const fetchMeme = async () => {
       try {
         const res = await api.get(`${serverUrl}/meme/info?code=${code}`, {});
+        console.log(res);
         setMeme(res.data);
         setLikesCount(res.data.likesCount || 0);
-        if (res.data.newAccessToken !== "" || res.data.newAccessToken !== null) {
+        if (res.data.newAccessToken !== null) {
           // 만약 새로운 액세스 토큰이 발급되었다면 토큰 갈아끼우기
           localStorage.setItem("token", "Bearer " + res.data.newAccessToken);
         }
