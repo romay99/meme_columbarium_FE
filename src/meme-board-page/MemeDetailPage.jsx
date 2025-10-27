@@ -5,6 +5,7 @@ import Footer from "../footer/Footer";
 import MDEditor from "@uiw/react-md-editor";
 import { ThemeContext } from "../dark-mode/ThemeContext.js";
 import api from "../api/api.js";
+import AdsenseAd from "../ad/AdsenseAd.jsx";
 
 const MemeDetailPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
@@ -151,6 +152,8 @@ const MemeDetailPage = () => {
             수정기록 열람
           </button>
         </div>
+
+        <AdsenseAd></AdsenseAd>
 
         <section className="mt-6 sm:mt-10 mx-2 sm:mx-4 md:mx-14">
           <span>{totalCount}개의 댓글</span>

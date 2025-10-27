@@ -6,6 +6,7 @@ import NavBar from "../nav-bar/navBar";
 import MemeData from "./MemeData";
 import SearchBar from "./SearchBar";
 import { ThemeContext } from "../dark-mode/ThemeContext";
+import AdsenseAd from "../ad/AdsenseAd";
 
 const MemeBoardListPage = () => {
   const serverUrl = process.env.REACT_APP_BACK_END_API_URL;
@@ -106,6 +107,9 @@ const MemeBoardListPage = () => {
           </button>
         ))}
       </div>
+
+      {/* 광고 */}
+      <AdsenseAd />
 
       {/* 등록 버튼 */}
       <div className="flex justify-end px-4 sm:px-12 mb-6">
