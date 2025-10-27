@@ -23,6 +23,7 @@ export const BoardListPage = () => {
     try {
       const response = await axios.get(`${serverUrl}/board/list?page=${page}`);
       // 공지글과 일반글을 분리
+      console.log(response);
       const noticeList = response.data.data.filter((item) => item.notice); // notice=true
       const regularList = response.data.data.filter((item) => !item.notice);
       const combinedList = [...noticeList, ...regularList]; // 공지글 먼저
