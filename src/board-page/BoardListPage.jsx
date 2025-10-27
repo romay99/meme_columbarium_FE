@@ -22,7 +22,11 @@ export const BoardListPage = () => {
     setLoading(true);
     try {
       const response = await axios.get(`${serverUrl}/board/list?page=${page}`);
-      setRes(response.data);
+      // 공지글과 일반글을 분리
+      const noticeList = response.data.data.filter((item) => item.notice); // notice=true
+      const regularList = response.data.data.filter((item) => !item.notice);
+      const combinedList = [...noticeList, ...regularList]; // 공지글 먼저
+      setRes({ ...response.data, data: combinedList });
     } catch (error) {
       console.error("데이터 불러오기 실패", error);
     } finally {
@@ -55,7 +59,8 @@ export const BoardListPage = () => {
                   title={item.title}
                   authorNickName={item.authorNickName}
                   createdAt={formattedDate}
-                  darkMode={darkMode} // BoardData에서도 다크모드 적용 가능
+                  darkMode={darkMode}
+                  notice={item.notice} // 공지글이면 BoardData에서 스타일 다르게 적용
                 />
               );
             })
